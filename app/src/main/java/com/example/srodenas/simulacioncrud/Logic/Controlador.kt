@@ -19,20 +19,10 @@ class Controlador (val actividad: MainActivity) : Operaciones {
         actividad.myButtonAdd = actividad.findViewById(R.id.myButtonAdd)
         actividad.myButtonDel = actividad.findViewById(R.id.myButtonDel)
         actividad.myButtonUpdate = actividad.findViewById(R.id.myButtonUpdate)
+        dialogo = Dialog()
 
         actividad.textV = actividad.findViewById(R.id.myText)
-        dialogo = Dialog(this,
-            { id: Int, name : String, apellido : String, telefono : String ->
-                clientAdd(id, name, apellido, telefono)
-            },
-            { id: Int, name : String, apellido : String, telefono : String ->
-                clientEdit(id, name, apellido, telefono)
-            },
-            { id : Int->
-                deleteClient(id)
-            })
         dialogo.setListener(this)
-
         actividad.myButtonAdd.setOnClickListener {
             dialogo.show(0)
             actividad.updateContent(actividad.showState())

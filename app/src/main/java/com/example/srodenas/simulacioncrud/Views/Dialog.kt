@@ -7,12 +7,7 @@ import com.google.android.material.animation.AnimatableView.Listener
 import kotlin.math.roundToInt
 
 //simulo un diálogo.
-class Dialog(
-    controlador: com.example.srodenas.simulacioncrud.Logic.Controlador,
-    private val agregarF : (Int, String, String, String) -> Unit,
-    private val editF: (Int, String, String, String) -> Unit,
-    private val eliminarF: (Int) -> Unit
-) {
+class Dialog{
     private var listener: Operaciones? = null
     private var accion: Int = 0;
 
@@ -47,11 +42,11 @@ class Dialog(
         apellido: String = "Obra maestra",
         telefono: String = "cccccccccc"
     ) {
-        agregarF(id, nombre, apellido, telefono)
+        listener!!.clientAdd(id, nombre, apellido, telefono)
     }
 
     private fun onDelete(id: Int) {
-        eliminarF(id)
+        listener!!.deleteClient(id)
     }
 
     private fun onEdit(
@@ -60,7 +55,7 @@ class Dialog(
         apellido: String = "Obra maestra",
         telefono: String = "cccccccccc"
     ) {
-        editF(id, nombre, apellido, telefono)
+        listener!!.clientEdit(id, nombre, apellido, telefono)
     }
 
 }
