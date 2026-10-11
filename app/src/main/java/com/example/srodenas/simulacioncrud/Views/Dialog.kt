@@ -42,7 +42,7 @@ class Dialog(
     }
 
     private fun addClient(
-        id: Int = (Math.random() + 99).roundToInt(),
+        id: Int = 100,
         nombre: String = "Ni idea",
         apellido: String = "Obra maestra",
         telefono: String = "cccccccccc"
