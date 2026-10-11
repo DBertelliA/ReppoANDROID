@@ -1,29 +1,32 @@
 package com.example.srodenas.simulacioncrud.Views
 
-import com.example.srodenas.simulacioncrud.Data.RepositoryClient
-import com.example.srodenas.simulacioncrud.Logic.Controller
-import com.example.srodenas.simulacioncrud.Logic.interfaces.OperationsInterface
+import com.example.srodenas.simulacioncrud.Data.ClientsRepo
+import com.example.srodenas.simulacioncrud.Logic.Controlador
+import com.example.srodenas.simulacioncrud.Logic.interfaces.Operaciones
 import com.google.android.material.animation.AnimatableView.Listener
+import kotlin.math.roundToInt
 
 //simulo un diálogo.
-class Dialog(var controller: Controller) {
-    private var listener: OperationsInterface? = null  //Ya si eso lo creo.
+class Dialog(
+    controlador: com.example.srodenas.simulacioncrud.Logic.Controlador,
+    private val agregarF : (Int, String, String, String) -> Unit,
+    private val editF: (Int, String, String, String) -> Unit,
+    private val eliminarF: (Int) -> Unit
+) {
+    private var listener: Operaciones? = null
+    private var accion: Int = 0;
 
-    private var action : Int = 0
-
-    //Carga el listener para el botón
-    fun setListener ( _listener : OperationsInterface){
+    //carga del listener para el botón
+    fun setListener(_listener: Operaciones) {
         listener = _listener
-
     }
 
-    //muestra el dialogo
-    fun show(typeAction : Int){
-        listener?.let{
-            val posibleName = "CAMBIADO"
-            val posibleId = controller.devIdRandom() //me da un aleatorio. -1 está vacío para editar/borrar.
-            when (typeAction){
-                0 -> onAccept() //simulamos que ahora pulsamos el botón aceptar de un nuevo
+    //Lo que muestra el dialogo
+    fun show(typeAction: Int) {
+        listener?.let {
+            val posibleId = (Math.random() + 99).roundToInt()//me da un aleatorio. -1 está vacío para editar/borrar.
+            when (typeAction) {
+                0 -> addClient() //simulamos que ahora pulsamos el botón aceptar de un nuevo
 
                 1 ->
                     if (posibleId != -1)
@@ -38,16 +41,26 @@ class Dialog(var controller: Controller) {
         }
     }
 
-    private fun onDelete(id : Int) {
-        listener!!.ClientDel(id)
+    private fun addClient(
+        id: Int = (Math.random() + 99).roundToInt(),
+        nombre: String = "Ni idea",
+        apellido: String = "Obra maestra",
+        telefono: String = "cccccccccc"
+    ) {
+        agregarF(id, nombre, apellido, telefono)
     }
 
-    private fun onEdit(id: Int, name : String) {
-        listener!!.ClientUpdate(id, name)
+    private fun onDelete(id: Int) {
+        eliminarF(id)
     }
 
-    //simula el pulsado del botón aceptar del dialogo. Este recoge los datos del usuario.
-    private fun onAccept() {
-        listener!!.ClientAdd(RepositoryClient.incrementPrimary(), "NUEVO CLIENTE")
+    private fun onEdit(
+        id: Int,
+        nombre: String,
+        apellido: String = "Obra maestra",
+        telefono: String = "cccccccccc"
+    ) {
+        editF(id, nombre, apellido, telefono)
     }
+
 }
